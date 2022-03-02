@@ -90,9 +90,10 @@ const MainContent = ({mapStyle}) => {
     }
   }, [map]);
 
-  const handleMapClick = ({features, lngLat}) => {
-    if (features.length){
-      const inputFeature = features[0];
+  const handleMapClick = (e) => {
+    if (e.features.length){
+      const inputFeatureId = e.features[0].properties.gml_id;
+      const inputFeature = features.find(({properties}) => properties.gml_id === inputFeatureId);
       //const buffered = buffer(inputFeature, 5, {units: 'meters'});
 
       if (selectedFeature.features.length) {
@@ -114,7 +115,7 @@ const MainContent = ({mapStyle}) => {
       }
 
     }
-    console.log(lngLat, features);
+    console.log(e.lngLat, e.features);
   };
 
   return <Map
