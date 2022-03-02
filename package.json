@@ -75,6 +75,9 @@
     "webpack-dev-server": "^4.3.1"
   },
   "dependencies": {
+    "@turf/buffer": "^6.5.0",
+    "@turf/dissolve": "^6.5.0",
+    "@turf/flatten": "^6.5.0",
     "flatgeobuf": "^3.21.3"
   }
 }
