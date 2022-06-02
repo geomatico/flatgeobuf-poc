@@ -35,7 +35,7 @@ Instalamos cidownloader y descargamos lo que nos interesa
 ```
 pip install CatastroInspireDownloader
 
-cidownloader -p 33 --tipo buildings
+cidownloader -p 33 -m 900--tipo buildings
 ```
 
 Una vez terminada la descarga tendremos un GeoPackage que podremos convertir a Flatgeobuf mediante OGR
