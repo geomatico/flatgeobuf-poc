@@ -1,55 +1,50 @@
-# plantilla-visor-react
+# Flatgeobuf POC
 
-Template for a simple viewer, to use it, go to https://github.com/geomatico/plantilla-visor-react and click on 'Use this template', a new repository will be created based on this template.
-If you want to add functionalities, you can see more components here: https://labs.geomatico.es/geocomponents/
+Prueba de concepto en el uso de FlatGeobuf.
 
-## First steps
+Para la prueba de concepto hemos descargado mediante la utilidad [cidownloader](https://github.com/geomatico/cidownloader) los datos del catastro de Oviedo. 
 
-Rename project in the following files:
+## Preparación del entorno
 
-- package.json:
-    - name
-    - repository.url
-    - bugs.url
-    - homepage
-- package-lock.json:
-    - name
-- template.html:
-    - Etiqueta `<title>`
+Para el uso del cidownloader necesitaremos crear un entorno virtual. Nosotros en geomatico usamos Conda. Encontraréis las instrucciones de instalación en su web. [Instalar Conda en Linux](https://docs.conda.io/projects/conda/en/latest/user-guide/install/linux.html)
 
-## Mapbox version
+Una vez instalada Conda, crearemos un entorno con Python 3.9 e instalaremos la versión 3.4 de GDAL.
 
-Not needed with the included versions: react-map-gl v5 (which implies mapbox v1).
+```bash
+conda create --name flatgeobuf python=3.9
+``` 
 
-If mapbox v2 is needed, do:
-* `npm install react-map-gl@6`
-* Add the `MAPBOX_ACCESS_TOKEN=` empty key (without the token value!) to `.env.example`.
-* Add the `MAPBOX_ACCESS_TOKEN=XXXXXXX` entry with a valid token to `.env`.
-* Pass the `mapboxAccessToken={process.env.MAPBOX_ACCESS_TOKEN}` prop to the `<Map>` instance.
+activamos e instalamos GDAL
 
-## i18n
+```bash
+conda activate flatgeobuf
 
-We use **i18next** framework to localize our components:
-
-- Web: [https://www.i18next.com/](https://www.i18next.com/)
-- React integration: [https://react.i18next.com/](https://react.i18next.com/)
-
-Usage example on functional component:
-
-```js
-import { useTranslation } from 'react-i18next';
-
-const FunctionalComponent = () => {
-  const { t } = useTranslation();
-  return <h1>{t('welcome')}</h1>
-}
+conda install -c conda-forge gdal
 ```
 
-The applied language will be determined by:
+podemos comprobar que GDAL se encuentra instalado:
 
-1. The `lang` query string. For instance, use [http://localhost:8080/?lang=es](http://localhost:8080/?lang=es).
-2. The browser language preferences.
-3. If detection fails, will default to `es`.
+```bash
+ogrinfo --version
 
-There are other detection strategies available, see
-[https://github.com/i18next/i18next-browser-languageDetector](https://github.com/i18next/i18next-browser-languageDetector).
+GDAL 3.5.0, released 2022/05/10
+```
+
+Instalamos cidownloader y descargamos lo que nos interesa
+
+```
+pip install CatastroInspireDownloader
+
+cidownloader -p 33 --tipo buildings
+```
+
+Una vez terminada la descarga tendremos un GeoPackage que podremos convertir a Flatgeobuf mediante OGR
+
+```bash
+ogr2ogr -f FlatGeoBuf buildings_Territorial_office_33_Oviedo.fgb buildings_Territorial_office_33_Oviedo.gpkg -sql "SELECT * FROM Building"
+```
+
+El resultado será un archivo `buildings_Territorial_office_33_Oviedo.fgb`que podréis publicar en vuestros CDNs y consumir directamente desde ahí
+
+
+[https://cdn.geomatico.es/datasets/buildings_Territorial_office_33_Oviedo.fgb](https://cdn.geomatico.es/datasets/buildings_Territorial_office_33_Oviedo.fgb)
