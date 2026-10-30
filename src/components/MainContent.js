@@ -1,7 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import { geojson } from 'flatgeobuf';
-import buffer from '@turf/buffer';
 import dissolve from '@turf/dissolve';
 import flatten from '@turf/flatten';
 
@@ -9,8 +8,7 @@ import Map from '@geomatico/geocomponents/Map';
 
 import {INITIAL_VIEWPORT} from '../config';
 
-//const FGB_URL = 'https://flatgeobuf.septima.dk/population_areas.fgb';
-const FGB_URL = 'https://cdn.geomatico.es/datasets/buildings_Territorial_office_33_Oviedo.fgb';
+const FGB_URL = 'https://cdn.geomatico.es/flatgeobuf-poc/buildings.fgb';
 
 const MainContent = ({mapStyle}) => {
   const [viewport, setViewport] = useState(INITIAL_VIEWPORT);

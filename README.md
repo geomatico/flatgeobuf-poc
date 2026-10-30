@@ -35,16 +35,16 @@ Instalamos cidownloader y descargamos lo que nos interesa
 ```
 pip install CatastroInspireDownloader
 
-cidownloader -p 33 -m 900--tipo buildings
+cidownloader -p 33 -m 900 --tipo buildings
 ```
 
 Una vez terminada la descarga tendremos un GeoPackage que podremos convertir a Flatgeobuf mediante OGR
 
 ```bash
-ogr2ogr -f FlatGeoBuf buildings_Territorial_office_33_Oviedo.fgb buildings_Territorial_office_33_Oviedo.gpkg -sql "SELECT * FROM Building"
+ogr2ogr -f FlatGeoBuf -t_srs EPSG:4326 buildings.fgb buildings.gpkg -sql "SELECT * FROM Building"
 ```
 
-El resultado será un archivo `buildings_Territorial_office_33_Oviedo.fgb`que podréis publicar en vuestros CDNs y consumir directamente desde ahí
+El resultado será un archivo `buildings.fgb` que podréis consumir directamente
 
 
-[https://cdn.geomatico.es/datasets/buildings_Territorial_office_33_Oviedo.fgb](https://cdn.geomatico.es/datasets/buildings_Territorial_office_33_Oviedo.fgb)
+[https://cdn.geomatico.es/flatgeobuf-poc/buildings.fgb](https://cdn.geomatico.es/flatgeobuf-poc/buildings.fgb)
